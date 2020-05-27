@@ -1,48 +1,24 @@
 <?php
+
 require 'vendor/autoload.php';
 
-use App\SQLiteConnection as SQLiteConnection;
-use App\SQLiteCreateTable as SQLiteCreateTable;
+use App\SQLiteConnection;
+use App\SQLiteInsert;
 
-$sqlite = new SQLiteCreateTable((new SQLiteConnection())->connect());
-// create new tables
-$sqlite->createTables();
-// get the table list
-$tables = $sqlite->getTableList();
-?>
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="sqlitetutorial.net">
-        <title>PHP SQLite CREATE TABLE Demo</title>
-        <link href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+$pdo = (new SQLiteConnection())->connect();
+$sqlite = new SQLiteInsert($pdo);
 
-    </head>
-    <body>
-        <div class="container">
-            <div class="page-header">
-                <h1>PHP SQLite CREATE TABLE Demo</h1>
-            </div>
+// insert a new project
+$projectId = $sqlite->insertProject('PHP SQLite Demo');
+// insert some tasks for the project
+$sqlite->insertTask('Prepare the sample database schema', '2016-06-01', '2016-06-01', 1, $projectId);
+$sqlite->insertTask('Create new tables ', '2016-05-01', null, 0, $projectId);
+$sqlite->insertTask('Insert some sample data', '2016-05-01', '2016-06-02', 1, $projectId);
 
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Tables</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($tables as $table) : ?>
-                        <tr>
-
-                            <td><?php echo $table ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </body>
-</html>
+// insert a second project
+$projectId = $sqlite->insertProject('Mastering SQLite');
+// insert the tasks for the second project
+$sqlite->insertTask('Go to sqlitetutorial.net', '2016-06-01', null, 0, $projectId);
+$sqlite->insertTask('Read all the tutorials.', '2016-06-01', null, 0, $projectId);
+$sqlite->insertTask('Use Try It page to practice the SQLite commands.', '2016-06-01', null, 0, $projectId);
+$sqlite->insertTask('Develop a simple SQLite-based application', '2016-06-15', null, 0, $projectId);
