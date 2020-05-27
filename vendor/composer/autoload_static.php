@@ -20,11 +20,17 @@ class ComposerStaticInit7fd6dcd9aee9648148fd5b275ee62eab
         ),
     );
 
+    public static $classMap = array (
+        'App\\Config' => __DIR__ . '/../..' . '/app/Config.php',
+        'App\\SQLiteConnection' => __DIR__ . '/../..' . '/app/SQLiteConnection.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit7fd6dcd9aee9648148fd5b275ee62eab::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit7fd6dcd9aee9648148fd5b275ee62eab::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit7fd6dcd9aee9648148fd5b275ee62eab::$classMap;
 
         }, null, ClassLoader::class);
     }
